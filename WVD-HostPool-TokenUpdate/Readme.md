@@ -5,3 +5,6 @@ $HostpoolTokenSecretName = <name of the keyvault secret>
 $HostpoolName = <Name of your HostPool>
 $ResourceGroup = <Name of the resource group where the Hostpool is deployed>
 Change the expiration time as per your need (default is set to 6 hours) (Linn 24)
+
+
+Link to Blog: 
