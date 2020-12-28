@@ -14,6 +14,7 @@ steps:
   
   inputs:
     azureSubscription: 'AzConnect'
+    displayName: 'Add HostPool Token to Azure Secrets'
     ScriptType: 'InlineScript'
     Inline: |
                   Install-Module AZ.DesktopVirtualization -Scope CurrentUser -Force
