@@ -11,15 +11,16 @@ pool:
 
 steps:
 - task: AzurePowerShell@5
+  
   inputs:
     azureSubscription: 'AzConnect'
     ScriptType: 'InlineScript'
     Inline: |
                   Install-Module AZ.DesktopVirtualization -Scope CurrentUser -Force
-                  $AzureKeyVaultName= "BuildDataForWVD"
-                  $HostpoolTokenName = "HostPoolToken"
-                  $HostpoolName = "serco-developers"
-                  $ResourceGroup = "WVD-RG"
+                  $AzureKeyVaultName= "<KeyVault's Name>"
+                  $HostpoolTokenSecretName = "<Name Of the Secret>"
+                  $HostpoolName = "<Name of the Hostpool>"
+                  $ResourceGroup = "<ResourceGroup's Name"
                   Write-Host "New TOken will be generated"
                   $Tokeninfo = New-AzWvdRegistrationInfo -HostPoolName $HostpoolName -ResourceGroupName $ResourceGroup -ExpirationTime $((get-date).ToUniversalTime().AddHours(6).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
                   $SecretToken = ConvertTo-SecureString -String $Tokeninfo.Token -AsPlainText -Force
