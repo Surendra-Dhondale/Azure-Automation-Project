@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hostpoolName": {
+            "value": "serco-developers"
+        },
+        "settingName": {
+            "value": "WVDInsights"
+        },
+        "workspaceId": {
+            "value": "/subscriptions/db2c6815-b4a2-4e70-8b36-5d3ca286b88e/resourceGroups/WVD-RG/providers/Microsoft.OperationalInsights/workspaces/wvdrganalytics"
+        }
+    }
+}
