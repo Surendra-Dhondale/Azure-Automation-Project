@@ -1,0 +1,29 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: AzurePowerShell@5
+  
+  inputs:
+    azureSubscription: 'AzConnect'
+    displayName: 'Add HostPool Token to Azure Secrets'
+    ScriptType: 'InlineScript'
+    Inline: |
+                  Install-Module AZ.DesktopVirtualization -Scope CurrentUser -Force
+                  $AzureKeyVaultName= "<KeyVault's Name>"
+                  $HostpoolTokenSecretName = "<Name Of the Secret>"
+                  $HostpoolName = "<Name of the Hostpool>"
+                  $ResourceGroup = "<ResourceGroup's Name"
+                  Write-Host "New TOken will be generated"
+                  $Tokeninfo = New-AzWvdRegistrationInfo -HostPoolName $HostpoolName -ResourceGroupName $ResourceGroup -ExpirationTime $((get-date).ToUniversalTime().AddHours(6).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+                  $SecretToken = ConvertTo-SecureString -String $Tokeninfo.Token -AsPlainText -Force
+                  Set-AzKeyVaultSecret -VaultName $AzureKeyVaultName -Name $HostpoolTokenName -SecretValue $SecretToken
+    azurePowerShellVersion: 'LatestVersion'
