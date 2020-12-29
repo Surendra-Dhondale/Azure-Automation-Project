@@ -10,20 +10,16 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: AzurePowerShell@5
-  
+- task: AzureResourceManagerTemplateDeployment@3
+  displayName: "Deploy Azure Log Analytics WorkSpace"
   inputs:
-    azureSubscription: 'AzConnect'
-    displayName: 'Add HostPool Token to Azure Secrets'
-    ScriptType: 'InlineScript'
-    Inline: |
-                  Install-Module AZ.DesktopVirtualization -Scope CurrentUser -Force
-                  $AzureKeyVaultName= "<KeyVault's Name>"
-                  $HostpoolTokenSecretName = "<Name Of the Secret>"
-                  $HostpoolName = "<Name of the Hostpool>"
-                  $ResourceGroup = "<ResourceGroup's Name"
-                  Write-Host "New TOken will be generated"
-                  $Tokeninfo = New-AzWvdRegistrationInfo -HostPoolName $HostpoolName -ResourceGroupName $ResourceGroup -ExpirationTime $((get-date).ToUniversalTime().AddHours(6).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
-                  $SecretToken = ConvertTo-SecureString -String $Tokeninfo.Token -AsPlainText -Force
-                  Set-AzKeyVaultSecret -VaultName $AzureKeyVaultName -Name $HostpoolTokenName -SecretValue $SecretToken
-    azurePowerShellVersion: 'LatestVersion'
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'AzConnect'
+    subscriptionId: 'db2c6815-b4a2-4e70-8b36-5d3ca286b88e'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'WVD-RG'
+    location: 'Southeast Asia'
+    templateLocation: 'Linked artifact'
+    csmFile: 'WVD-Deploy-AzureMonitor/Code/DeployLogAnalytics.json'
+    csmParametersFile: 'WVD-Deploy-AzureMonitor/Parameters/WVD-PM-Deploy-LogAnalytics.json'
+    deploymentMode: 'Incremental'
