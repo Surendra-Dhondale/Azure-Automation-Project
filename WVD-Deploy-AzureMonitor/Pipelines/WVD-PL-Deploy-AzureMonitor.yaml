@@ -37,3 +37,17 @@ steps:
     csmFile: 'WVD-Deploy-AzureMonitor/Code/DeployHostPoolDiagnostics.json'
     csmParametersFile: 'WVD-Deploy-AzureMonitor/Parameters/WVD-PM-Deploy-HostPoolDiagnostics.json'
     deploymentMode: 'Incremental'
+
+- task: AzureResourceManagerTemplateDeployment@3
+  displayName: "Configure HostPool Perf Counters"
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'AzConnect'
+    subscriptionId: 'db2c6815-b4a2-4e70-8b36-5d3ca286b88e'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'WVD-RG'
+    location: 'Southeast Asia'
+    templateLocation: 'Linked artifact'
+    csmFile: 'WVD-Deploy-AzureMonitor/Code/DeployHostPoolPerformanceCounters.json'
+    csmParametersFile: 'WVD-Deploy-AzureMonitor/Parameters/WVD-PM-Deploy-HostPoolPerfCounters.json'
+    deploymentMode: 'Incremental'
