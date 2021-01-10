@@ -1,0 +1,44 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'AzConnect'
+    ScriptType: 'InlineScript'
+    Inline: |
+      $resourcegroup = "<Enter-ResourceGroupName>"
+      $HostPoolName = "<Enter-Hostpool Name>" 
+      $requiredmachinesPercentage = 50
+      $DomainName = "<Your Domain Here>"
+      Install-Module AZ.DesktopVirtualization -Scope CurrentUser -Force
+      $machines = Get-AzWvdSessionHost -ResourceGroupName $resourcegroup -HostPoolName $HostPoolName
+      Write-Host("Machines in the Hostpool: $machines.Name")
+      $totalmachines = $machines.Count
+      Write-Host("Number of Machines: $totalmachines")
+      $numberofmachinestoturnon = [math]::Round(($totalmachines * ($requiredmachinesPercentage/100)))
+      write-host("Number of machines to turn on $numberofmachinestoturnon")
+      $count = 0
+      Write-Host
+      While($count -lt $numberofmachinestoturnon)
+      {
+          $HostPoolName = $HostPoolName + "/"
+          write-host $HostPoolName
+          $VMName = $($machines[$count].Name).Replace($HostPoolName,"")
+          write-host $VMName
+          $DomainName = "." + $DomainName
+          $VMName = $VMName.Replace($DomainName,"")
+          Write-Host("Powering on - $VMName")
+          Start-AzVM -ResourceGroupName $resourcegroup -Name $VMName -AsJob
+          $VMName
+          $count = $count + 1
+      }
+    azurePowerShellVersion: 'LatestVersion'
