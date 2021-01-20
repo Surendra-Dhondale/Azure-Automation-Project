@@ -1,0 +1,50 @@
+## Pipeline yaml for adding Session Hosts to Host Pool for Serco Developers Team in Sercotest WVD
+# Karl Eveleigh - Sept 2020
+
+# Trigger / Branch - Could be removed as unused
+trigger: none
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+# Get secrets from keyvault
+steps:
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: '<enter the azure service connection name>'
+    ScriptType: 'InlineScript'
+    Inline: |
+                  Install-Module AZ.DesktopVirtualization -Scope CurrentUser -Force
+                  $AzureKeyVaultName= "<Enter Your Key Vault Name>"
+                  $HostpoolTokenName = "<Enter the name of the Secret to store Hostpool TOken>"
+                  $HostpoolName = "<Enter the name of the hostpool>"
+                  $ResourceGroup = "<Enter the resourcegroup name>"
+                  Write-Host "New TOken will be generated"
+                  $Tokeninfo = New-AzWvdRegistrationInfo -HostPoolName $HostpoolName -ResourceGroupName $ResourceGroup -ExpirationTime $((get-date).ToUniversalTime().AddHours(6).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+                  $SecretToken = ConvertTo-SecureString -String $Tokeninfo.Token -AsPlainText -Force
+                  Set-AzKeyVaultSecret -VaultName $AzureKeyVaultName -Name $HostpoolTokenName -SecretValue $SecretToken
+    azurePowerShellVersion: 'LatestVersion'
+
+- task: AzureKeyVault@1
+  displayName: 'Gather variable data for parameters file'
+  inputs:
+    azureSubscription: '<enter the azure service connection name>'
+    KeyVaultName: '<Enter your Key Vault Name>'
+    SecretsFilter: '<Enter the name of the Secret to store Hostpool TOken>,<Enter the name of the secret used to store domain join account password>'
+    RunAsPreJob: false
+
+# Deploy Session Host Workers
+- task: AzureResourceManagerTemplateDeployment@3
+  displayName: 'Deploy WVD Win10ms Dev Team Host Pool'
+  inputs:
+    deploymentScope: Resource Group
+    action: Create Or Update Resource Group
+    azureResourceManagerConnection: <enter the azure service connection name>
+    subscriptionId: '<enter the azure subscription id>'
+    resourceGroupName: '<enter the resource group name>'
+    location: '<enter the desired location of deployment>'
+    overrideParameters: '-hostpoolToken $(<Enter the name of the Secret to store Hostpool TOken>) -administratorAccountPassword $(<Enter the name of the secret used to store domain join account password>)' 
+    csmFile: 'WVD-HostPool-AddSessionHosts-AZ\Code\AddVirtualMachinesTemplate.json'
+    csmParametersFile: 'WVD-HostPool-AddSessionHosts-AZ\Parameters\WVD-PM-Manage-Hostpool-AddSessionHost-Prod.json'
+    deploymentMode: Incremental

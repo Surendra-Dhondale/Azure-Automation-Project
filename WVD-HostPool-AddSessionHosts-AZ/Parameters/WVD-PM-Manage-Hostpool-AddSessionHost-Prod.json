@@ -1,0 +1,102 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "artifactsLocation": {
+            "value": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_12-15-2020.zip"
+        },
+        "nestedTemplatesLocation": {
+            "value": "https://catalogartifact.azureedge.net/publicartifacts/Microsoft.Hostpool-ARM-1.0.15-preview/"
+        },
+        "hostpoolName": {
+            "value": ""
+        },
+        "hostpoolToken": {
+            "value": null
+        },
+        "administratorAccountUsername": {
+            "value": ""
+        },
+        "administratorAccountPassword": {
+            "value": ""
+        },
+        "hostpoolResourceGroup": {
+            "value": ""
+        },
+        "hostpoolProperties": {
+            "value": {}
+        },
+        "hostpoolLocation": {
+            "value": ""
+        },
+        "vmInitialNumber": {
+            "value": 0
+        },
+        "vmResourceGroup": {
+            "value": ""
+        },
+        "vmLocation": {
+            "value": ""
+        },
+        "vmSize": {
+            "value": "Standard_B2s"
+        },
+        "vmNumberOfInstances": {
+            "value": 2
+        },
+        "vmNamePrefix": {
+            "value": ""
+        },
+        "vmImageType": {
+            "value": "Gallery"
+        },
+        "vmDiskType": {
+            "value": "StandardSSD_LRS"
+        },
+        "vmUseManagedDisks": {
+            "value": true
+        },
+        "existingVnetName": {
+            "value": ""
+        },
+        "existingSubnetName": {
+            "value": ""
+        },
+        "virtualNetworkResourceGroupName": {
+            "value": ""
+        },
+        "createNetworkSecurityGroup": {
+            "value": false
+        },
+        "domain": {
+            "value": ""
+        },
+        "networkInterfaceTags": {
+            "value": {}
+        },
+        "networkSecurityGroupTags": {
+            "value": {}
+        },
+        "virtualMachineTags": {
+            "value": {}
+        },
+        "imageTags": {
+            "value": {}
+        },
+        "deploymentId": {
+            "value": "fec4a278-32f2-4ee2-a433-961cf4e0004f"
+        },
+        "apiVersion": {
+            "value": "2019-12-10-preview"
+        },
+        "vmGalleryImageOffer": {
+            "value": "Windows-10"
+        },
+        "vmGalleryImagePublisher": {
+            "value": "MicrosoftWindowsDesktop"
+        },
+        "vmGalleryImageSKU": {
+            "value": "19h2-evd"
+        }
+    }
+}
