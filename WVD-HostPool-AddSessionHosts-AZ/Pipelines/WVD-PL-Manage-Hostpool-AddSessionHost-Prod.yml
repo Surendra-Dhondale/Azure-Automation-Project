@@ -36,7 +36,7 @@ steps:
 
 # Deploy Session Host Workers
 - task: AzureResourceManagerTemplateDeployment@3
-  displayName: 'Deploy WVD Win10ms Dev Team Host Pool'
+  displayName: 'Deploy WVD Win10ms Dev Team Host Pool' 
   inputs:
     deploymentScope: Resource Group
     action: Create Or Update Resource Group
