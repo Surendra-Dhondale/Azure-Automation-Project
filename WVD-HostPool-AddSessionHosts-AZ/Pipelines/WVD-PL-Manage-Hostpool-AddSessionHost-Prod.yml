@@ -1,5 +1,5 @@
-## Pipeline yaml for adding Session Hosts to Host Pool for Serco Developers Team in Sercotest WVD
-# Karl Eveleigh - Sept 2020
+#Pipeline to add session hosts into availability zones and then add them to the hostpool#
+#Author: Surendra D M#
 
 # Trigger / Branch - Could be removed as unused
 trigger: none
