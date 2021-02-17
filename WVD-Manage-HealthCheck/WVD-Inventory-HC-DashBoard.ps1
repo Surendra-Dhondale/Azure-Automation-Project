@@ -2,8 +2,8 @@
 
 Script Version: 1.0 
 Script created in Powershell Version: v5.0
-Powershell Modules required: Microsoft.RDInfra.RDPowerShell 
-Time Taken to write this script and test : ~1.5 hours
+Powershell Modules required: Az.DesktopVirtualization 
+
 
 This Script is written by Surendra D M, You may use this script as you wish. If you wish to contribute to the script, comment, or have suggestions reach out to: 
 Https://v-desktops.com vdesktops@gmail.com
